@@ -1,0 +1,16 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo Installing dependencies
+      - npm install
+  build:
+    commands:
+      - echo Build started
+      - docker build -t my-node-app .
+      - docker tag my-node-app:latest <your-aws-account-id>.dkr.ecr.<your-region>.amazonaws.com/my-node-app-repo:latest
+      - $(aws ecr get-login --no-include-email --region <your-region>)
+      - docker push <your-aws-account-id>.dkr.ecr.<your-region>.amazonaws.com/my-node-app-repo:latest
+artifacts:
+  files: '**/*'
